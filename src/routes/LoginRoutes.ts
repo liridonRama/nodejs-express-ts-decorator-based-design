@@ -1,4 +1,6 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
+
+import { AppRouter } from "../AppRouter";
 
 
 interface RequestWithBody extends Request {
@@ -21,25 +23,7 @@ const requireAuth = (req: Request, res: Response, next: NextFunction): void => {
   res.status(403).send("Not Permitted");
 }
 
-const router = Router();
-
-router.get("/login", (req: Request, res: Response) => {
-  res.type("html").send(`
-    <form method="POST">
-      <div class="">
-        <label for="email">Email</label>
-        <input required type="text" name="email" id="email" />
-      </div>
-      <div class="">
-        <label for="password">Password</label>
-        <input required type="text" name="password" id="password" />
-      </div>
-      <input type="submit" value="Submit">
-    </form>
-`)
-});
-
-router.post("/login", (req: RequestWithBody, res: Response) => {
+AppRouter.instance.post("/login", (req: RequestWithBody, res: Response) => {
   const { email, password } = req.body as LoginCredentials;
 
   if (email === "hi@hi.com" && password === "1234") {
@@ -52,7 +36,7 @@ router.post("/login", (req: RequestWithBody, res: Response) => {
 });
 
 
-router.get("/", (req: Request, res: Response) => {
+AppRouter.instance.get("/", (req: Request, res: Response) => {
   if (req.session?.loggedIn) {
     res.type("html").send(`
       <div>
@@ -71,14 +55,12 @@ router.get("/", (req: Request, res: Response) => {
 });
 
 
-router.get("/logout", (req: Request, res: Response) => {
+AppRouter.instance.get("/logout", (req: Request, res: Response) => {
   req.session = undefined;
   res.redirect("/");
 });
 
 
-router.get("/protected", requireAuth, (req: Request, res: Response) => {
+AppRouter.instance.get("/protected", requireAuth, (req: Request, res: Response) => {
   res.status(200).send("Welcome to the protected route")
 });
-
-export { router }
