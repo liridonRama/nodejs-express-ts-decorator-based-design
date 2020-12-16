@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
 
 import "./controllers/LoginController";
+import "./controllers/RootController";
 
 import { AppRouter } from "./AppRouter";
 

@@ -1,5 +1,6 @@
 export enum METADATA_KEYS {
   METHOD = "method",
   PATH = "path",
-  MIDDLEWARE = "middleware"
+  MIDDLEWARE = "middleware",
+  VALIDATOR = "validator",
 }
